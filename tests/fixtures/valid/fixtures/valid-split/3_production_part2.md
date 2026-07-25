@@ -1,0 +1,22 @@
+# Fixture Split — Production (part2)
+
+[← Part 1 T1-T2](3_production_part1.md)
+
+## Table of Contents
+
+- [T3. Gamma Concept](#t3-gamma-concept)
+- [T4. Delta Concept](#t4-delta-concept)
+
+## T3. Gamma Concept
+
+<sub>Levels: [Foundation](0_foundation_part2.md#t3-gamma-concept) · [Understand](1_understand_part2.md#t3-gamma-concept) · [Interview](2_interview_part2.md#t3-gamma-concept) · Production</sub>
+
+Production-level body for Gamma Concept. It says something true.
+
+## T4. Delta Concept
+
+<sub>Levels: [Foundation](0_foundation_part2.md#t4-delta-concept) · [Understand](1_understand_part2.md#t4-delta-concept) · [Interview](2_interview_part2.md#t4-delta-concept) · Production</sub>
+
+Production-level body for Delta Concept. It says something true.
+
+[← Part 1 T1-T2](3_production_part1.md)

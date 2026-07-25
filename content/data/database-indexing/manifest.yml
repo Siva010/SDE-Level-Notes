@@ -1,0 +1,17 @@
+subject:            Database Indexing
+slug:               database-indexing
+category:           data
+summary:            How indexes turn a scan into a lookup, and what that speed costs you on every write.
+tags:               [databases, indexing, query-performance, postgresql]
+difficulty:         intermediate
+language_or_format: SQL (PostgreSQL 16)
+version_target:     PostgreSQL 16
+audience:           strong mid-level engineer
+goal:               interview prep and on-the-job fluency
+topic_count:        11
+outline_version:    v1
+prereqs:            []
+generated:          2026-07-25
+parts:
+  - { range: T1-T5,  suffix: part1 }
+  - { range: T6-T10, suffix: part2 }

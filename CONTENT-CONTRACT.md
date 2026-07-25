@@ -166,7 +166,8 @@ fields; this is structured data wearing markdown.
 Required: `Definition`, `Why It Exists`, `Interview Explanation`, `Example`,
 `Common Interview Questions`, `Follow-up Questions`, `Common Mistakes`,
 `Important Facts to Remember`.
-Conditional: `Syntax`, `Edge Cases`, `Comparisons`, `Complexity`, `Frequently Confused With`.
+Conditional: `Syntax`, `Edge Cases`, `Comparisons`, `Complexity`, `Frequently Confused With`,
+`Mock Follow-up` (the level 2 exercise, emitted when `include_exercises: true`).
 
 A missing required subsection is a warning. An unrecognised H3 is a warning and renders as
 a plain subsection.

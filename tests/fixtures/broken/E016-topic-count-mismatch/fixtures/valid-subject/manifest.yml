@@ -1,0 +1,14 @@
+subject:             Fixture Subject
+slug:                valid-subject
+category:            fixtures
+summary:             A minimal valid subject, so the gate can be proven to fire only when it should.
+tags:                [fixtures, testing]
+difficulty:          intermediate
+language_or_format:  prose
+version_target:      v1
+audience:            the test suite
+goal:                validation coverage
+topic_count:        99
+outline_version:     v1
+prereqs:             []
+generated:           2026-07-25
