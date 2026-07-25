@@ -10,7 +10,29 @@ induced and the error confirmed legible. Not asserted in prose.
 
 ## Phase 1 — Pipeline and gate
 
-- [ ] Not started
+- [x] Done — `npm run validate && npm run build && npm test && npm run typecheck` all green.
+
+**Demonstrated, not asserted.** Each acceptance breakage was applied to the seed subject, the
+message read, and the change reverted:
+
+| Breakage | Code | First line of the report |
+|---|---|---|
+| Renamed `## T8. Hash Indexes` → `Hash Index` in `2_interview_part2.md` | `E008` | expected `## T8. Hash Indexes`, actual `## T8. Hash Index`, at `2_interview_part2.md:210 T8` |
+| Deleted `1_understand_part2.md` | `E003` | expected `1_understand_part2.md (parts: T1-T5, T6-T10)` |
+| `parts` range `T6-T10` → `T7-T10` | `E004` | expected a range starting at `T6`, actual `T7-T10 starts at T7` |
+| Added `---\ntitle: x\n---` to `1_understand_part1.md` | `E017` | expected the file to start with its H1 |
+| `prereqs: [java-generics]` | `E015` | expected one of the known slugs, actual `java-generics` |
+
+Notes for later phases:
+
+- A subject may omit levels 1–3 entirely (`E003` fires only for level 0, or for a file some
+  declared part implies). The depth control in Phase 2 must render an absent level as absent.
+- `Mock Follow-up` was added to the level 2 H3 vocabulary in `CONTENT-CONTRACT.md` §7. The
+  generator's §6 emits it whenever `include_exercises: true`, so the vocabulary was incomplete.
+- Diagnostics sort root-cause-first, not file-first: one bad `parts` range invalidates every
+  in-file ToC, and the twenty `E012`s must not bury the one `E004` that caused them.
+- Read time and the `W004` depth check count fenced code, not just prose. A code-dense Level 3
+  is dense, not thin.
 
 Nothing renders until parsing and validation are solid. This is the phase everything else
 rests on, and the one most likely to be rushed.

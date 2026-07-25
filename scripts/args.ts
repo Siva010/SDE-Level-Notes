@@ -34,6 +34,22 @@ export function parseArgs(argv: readonly string[]): ParsedArgs {
   return { positional, flags };
 }
 
+/**
+ * Read a named flag the way it actually arrives.
+ *
+ * `npm run new:subject "X" --category y` never reaches the script as `--category y`: npm
+ * consumes the flag and re-exposes it as `npm_config_category`, leaving `y` as a bare
+ * positional. All three forms are accepted, so the documented invocation works and a direct
+ * `tsx scripts/new-subject.ts "X" --category y` works too.
+ */
+export function flag(args: ParsedArgs, name: string, positionalIndex: number): string | undefined {
+  const fromArgv = args.flags[name];
+  if (fromArgv !== undefined && fromArgv !== 'true') return fromArgv;
+  const fromNpm = process.env[`npm_config_${name}`];
+  if (fromNpm !== undefined && fromNpm !== '' && fromNpm !== 'true') return fromNpm;
+  return args.positional[positionalIndex];
+}
+
 export function slugify(text: string): string {
   return text
     .trim()

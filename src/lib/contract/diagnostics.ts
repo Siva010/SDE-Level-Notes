@@ -58,10 +58,23 @@ export function formatDiagnostics(diagnostics: readonly Diagnostic[], colours = 
   return diagnostics.map((d) => formatDiagnostic(d, colours)).join('\n\n');
 }
 
-/** Errors first, then by file, then by line — so the first thing printed is the worst thing. */
+/**
+ * Root causes before their consequences. A bad `parts` range makes every in-file ToC look
+ * wrong, so printing twenty E012s above the one E004 that caused them would send a reader
+ * to fix the wrong files. Codes not listed here sort after the ones that are.
+ */
+const CAUSE_ORDER = ['E001', 'E002', 'E003', 'E004', 'E005', 'E016', 'E006', 'E018', 'E010', 'E017'];
+
+function rank(code: string): number {
+  const index = CAUSE_ORDER.indexOf(code);
+  return index === -1 ? CAUSE_ORDER.length : index;
+}
+
+/** Errors first, root causes first within those, then by file and line. */
 export function sortDiagnostics(diagnostics: readonly Diagnostic[]): Diagnostic[] {
   return [...diagnostics].sort((a, b) => {
     if (a.severity !== b.severity) return a.severity === 'error' ? -1 : 1;
+    if (rank(a.code) !== rank(b.code)) return rank(a.code) - rank(b.code);
     if (a.file !== b.file) return a.file < b.file ? -1 : 1;
     return (a.line ?? 0) - (b.line ?? 0);
   });

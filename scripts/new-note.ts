@@ -4,16 +4,16 @@ import { existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { parseArgs, slugify } from './args.js';
+import { flag, parseArgs, slugify } from './args.js';
 
 /** `npm run new:note "Some Idea" --category misc` — the loose single-file path (§1 shape B). */
 
 const repoRoot = resolve(fileURLToPath(new URL('..', import.meta.url)));
 
 async function main(): Promise<number> {
-  const { positional, flags } = parseArgs(process.argv.slice(2));
-  const title = positional[0];
-  const category = flags['category'];
+  const args = parseArgs(process.argv.slice(2));
+  const title = args.positional[0];
+  const category = flag(args, 'category', 1);
 
   if (!title || !category) {
     console.error('usage: npm run new:note "Note Title" --category <kebab-case-category>');
