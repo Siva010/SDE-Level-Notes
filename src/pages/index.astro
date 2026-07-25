@@ -1,0 +1,82 @@
+---
+import { getCollection } from 'astro:content';
+import { fromStored, type StoredSubject } from '../lib/serialize';
+import { LEVEL_IDS, LEVEL_LABEL, flattenOutline } from '../lib/contract/types';
+
+// Phase 1 route: deliberately unstyled. It exists to prove the pipeline, not to be read.
+// Typography, the depth control and the real reading page are Phase 2.
+
+const entries = await getCollection('library');
+const subjects = entries
+  .map((entry) => fromStored(entry.data as unknown as StoredSubject))
+  .sort((a, b) => (a.category + a.slug < b.category + b.slug ? -1 : 1));
+
+const verifyCount = subjects.reduce((n, s) => n + s.verifyMarkers.length, 0);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Library — parsed content</title>
+  </head>
+  <body>
+    <h1>Library</h1>
+    <p>
+      {subjects.length} item(s) · {verifyCount} verify marker(s) · Phase 1 output, unstyled on purpose.
+    </p>
+
+    {
+      subjects.map((subject) => (
+        <section>
+          <h2>
+            {subject.manifest.subject} <code>{subject.category}/{subject.slug}</code>
+          </h2>
+          <p>{subject.manifest.summary}</p>
+          <p>
+            kind: {subject.kind} · difficulty: {subject.manifest.difficulty} · updated: {subject.updated} ·
+            levels: {LEVEL_IDS.filter((l) => subject.levels.has(l))
+              .map((l) => `${l} ${LEVEL_LABEL[l]} (${subject.levels.get(l)?.readTimeMin ?? 0} min)`)
+              .join(', ') || 'none'}
+            {subject.manifest.prereqs.length > 0 && <span> · prereqs: {subject.manifest.prereqs.join(', ')}</span>}
+          </p>
+
+          {subject.outline.length > 0 && (
+            <ol>
+              {flattenOutline(subject.outline).map((topic) => (
+                <li>
+                  <code>{topic.id}</code> {topic.name} <code>#{topic.anchor}</code>
+                  {' — '}
+                  {LEVEL_IDS.filter((l) => subject.levels.get(l)?.topics.has(topic.id))
+                    .map((l) => `L${l}`)
+                    .join(' ')}
+                </li>
+              ))}
+            </ol>
+          )}
+        </section>
+      ))
+    }
+
+    {
+      verifyCount > 0 && (
+        <section>
+          <h2>Verify queue</h2>
+          <ul>
+            {subjects.flatMap((subject) =>
+              subject.verifyMarkers.map((marker) => (
+                <li>
+                  <code>
+                    {subject.slug} {marker.topicId} L{marker.level}
+                  </code>
+                  {' — '}
+                  {marker.sentence}
+                </li>
+              )),
+            )}
+          </ul>
+        </section>
+      )
+    }
+  </body>
+</html>
